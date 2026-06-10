@@ -6,12 +6,14 @@ Este arquivo documenta toda a interação com o assistente de IA (Claude, da Ant
 
 ## 1. Leitura da especificação e geração do CLAUDE.md
 
-A primeira interação foi o comando `/init`, que instrui o assistente a analisar o repositório e gerar um arquivo `CLAUDE.md` — um documento de orientação para o próprio assistente em sessões futuras.
+A primeira interação foi o comando `/init`, que pedi ao assistente para analisar o repositório e gerar um arquivo `CLAUDE.md`, um documento de orientação para o próprio assistente e funciona também como uma cache de certa forma.
 
 **Prompt inicial:**
 > `/init`
 
-Como o projeto estava vazio (apenas um `spec.md` em branco), o assistente gerou um `CLAUDE.md` mínimo indicando que o projeto estava em fase inicial. Em seguida, a especificação do professor foi adicionada ao `CLAUDE.md`, e o assistente passou a ter acesso completo aos requisitos.
+Como o projeto estava vazio (apenas um `spec.md` em branco), o assistente gerou um `CLAUDE.md` mínimo indicando que o projeto estava em fase inicial. Em seguida, a especificação do professor foi adicionada ao `CLAUDE.md`, e o assistente passou a ter acesso completo aos requisitos. 
+
+OBS: O spec.md era um arquivo com a especificação passada pelo professor que o Claude não conseguiu ler, então acabei passando direto.
 
 ---
 
@@ -30,7 +32,7 @@ O assistente analisou os requisitos e propôs a seguinte arquitetura antes de es
 - React Leaflet com `CircleMarker` para a visualização geográfica (em vez de um arquivo GeoJSON completo, que seria pesado demais para carregar)
 - Uma camada utilitária (`languages.js`) para converter os códigos de idioma MARC retornados pela Open Library para o formato esperado pela REST Countries API
 
-A partir dessa análise, o assistente criou automaticamente todos os arquivos do projeto:
+A partir dessa análise, o assistente criou todos os arquivos do projeto:
 
 - `package.json`, `vite.config.js`, `index.html`
 - `src/main.jsx`, `src/index.css`
@@ -53,7 +55,7 @@ Ao testar manualmente a aplicação, foi encontrado um problema:
 **Prompt:**
 > "Testei aqui com Capitães de Areia do Jorge Amado e tá dizendo que não achou por idioma (por)."
 
-O assistente diagnosticou a causa raiz: a implementação inicial convertia o código MARC `por` para o código ISO 639-1 de duas letras `pt` e chamava o endpoint `/v3.1/lang/pt` da REST Countries API. Esse endpoint **não aceita** códigos ISO 639-1 — ele busca por nome do idioma em inglês ou por códigos ISO 639-3.
+A IA identificou o problema: a implementação inicial convertia o código MARC `por` para o código ISO 639-1 de duas letras `pt` e chamava o endpoint `/v3.1/lang/pt` da REST Countries API. Esse endpoint **não aceita** códigos ISO 639-1 — ele busca por nome do idioma em inglês ou por códigos ISO 639-3.
 
 Além disso, o assistente identificou um problema latente para outros idiomas: alguns códigos MARC usam formas bibliográficas que divergem do ISO 639-3 (por exemplo, francês é `fre` no MARC e `fra` no ISO 639-3), o que causaria falhas silenciosas em buscas futuras.
 
@@ -80,15 +82,6 @@ O assistente revisou cada item da especificação e confirmou que todos os requi
 > "Pode criar o README."
 
 O assistente gerou o `README.md` com as instruções de execução (`npm install` / `npm run dev`) e uma explicação em prosa das principais decisões técnicas do projeto: escolha de React + Vite, centralização de estado, a camada de tradução de códigos MARC e o uso de `CircleMarker` em vez de GeoJSON para a visualização geográfica.
-
----
-
-## 6. Criação deste documento
-
-**Prompt:**
-> "Crie um outro arquivo MD com o contexto desse chat nosso."
-
-O assistente criou inicialmente um `DEVLOG.md` com foco técnico nas decisões de implementação. Ao ser informado de que o professor exigia explicitamente o registro da **interação com a IA**, o arquivo foi reescrito no formato atual, documentando cada prompt e resposta relevante da sessão.
 
 ---
 
