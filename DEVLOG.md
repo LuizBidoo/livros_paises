@@ -94,4 +94,3 @@ O assistente gerou o `README.md` com as instruções de execução (`npm install
 | 3 | Reportou bug com "Capitães de Areia" | Diagnosticou erro na conversão de código de idioma e corrigiu |
 | 4 | Verificar cobertura do spec | Confirmou cobertura completa; apontou README faltando |
 | 5 | Criar README | Gerou `README.md` com instruções e decisões em prosa |
-| 6 | Criar registro do chat | Gerou este `DEVLOG.md` |
