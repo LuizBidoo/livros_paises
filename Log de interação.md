@@ -85,6 +85,34 @@ O assistente gerou o `README.md` com as instruções de execução (`npm install
 
 ---
 
+## 6. Melhorias de interface: modo noturno, bandeiras e renomeação
+
+Após a entrega inicial, foram solicitadas três melhorias visuais na aplicação.
+
+**Prompt:**
+> "Quero que você atualize o frontend adicionando a opção de entrar em modo noturno, adicione nas bolinhas as bandeiras dos países e troque o nome da página para GlobeBook"
+
+O assistente realizou as seguintes alterações:
+
+- **Renomeação:** o título da aba (`index.html`) e o `<h1>` do cabeçalho foram atualizados de "Livros & Países" para "GlobeBook"
+- **Modo noturno:** adicionado estado `darkMode` em `App.jsx` com botão de alternância no cabeçalho. A classe `.dark` é aplicada na div raiz e sobrescreve as cores de todos os elementos via seletores CSS. O mapa também troca o tile layer para a versão escura do CartoDB (`dark_all`) quando o modo noturno está ativo
+- **Bandeiras nos marcadores:** os `CircleMarker` foram substituídos por `Marker` com `L.divIcon` customizado, renderizando o emoji de bandeira (`country.flag`) de cada país no mapa
+
+---
+
+## 7. Correção de bug: idioma chinês e marcadores exibindo siglas
+
+Ao testar com livros em chinês, dois problemas foram identificados.
+
+**Prompt:**
+> "Tá, temos um bug onde a língua chinesa está como CMN e não mostra nada. Agora as bolinhas viraram as siglas dos países, quero que apareçam esferas com as bandeiras do país que fala a língua do livro."
+
+**Problema 1 — código `cmn`:** A Open Library retorna `cmn` (código ISO 639-3 do Mandarim) em vez de `chi` (forma bibliográfica MARC). O mapa `MARC_TO_LANG_EN` e `MARC_TO_PT` em `languages.js` só tinham a entrada `chi`, então `cmn` passava sem tradução e a busca na API falhava. Correção: adicionado `cmn: 'chinese'` e `cmn: 'Chinês'` nas duas tabelas.
+
+**Problema 2 — siglas nos marcadores:** Emojis de bandeira (ex.: 🇧🇷) são compostos por caracteres indicadores regionais Unicode. No Windows, esses caracteres não são renderizados como imagens pelo sistema operacional — aparecem como as duas letras da sigla ("BR", "CN"). A abordagem de usar o emoji como texto no `divIcon` era portanto incompatível com Windows. Correção: o `divIcon` foi reescrito para usar a imagem real da bandeira (`country.flags.svg`) da REST Countries API dentro de um `<div>` circular com `border-radius: 50%`, produzindo as "esferas com bandeiras" independente do suporte a emoji do sistema.
+
+---
+
 ## Resumo da interação
 
 | Etapa | Prompt do usuário | Ação do assistente |
@@ -94,4 +122,6 @@ O assistente gerou o `README.md` com as instruções de execução (`npm install
 | 3 | Reportou bug com "Capitães de Areia" | Diagnosticou erro na conversão de código de idioma e corrigiu |
 | 4 | Verificar cobertura do spec | Confirmou cobertura completa; apontou README faltando |
 | 5 | Criar README | Gerou `README.md` com instruções e decisões em prosa |
-| 6 | Criar registro do chat | Gerou este `DEVLOG.md` |
+| 6 | Criar registro do chat | Gerou este arquivo de log |
+| 7 | Modo noturno, bandeiras e renomeação para GlobeBook | Adicionou toggle de dark mode, imagens de bandeira nos marcadores e atualizou nome da aplicação |
+| 8 | Bug `cmn` e marcadores exibindo siglas | Adicionou `cmn` ao mapa de idiomas; substituiu emoji de bandeira por imagem SVG em esfera circular |

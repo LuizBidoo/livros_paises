@@ -14,6 +14,7 @@ export default function App() {
   const [countriesLoading, setCountriesLoading] = useState(false)
   const [searchError, setSearchError] = useState(null)
   const [countriesError, setCountriesError] = useState(null)
+  const [darkMode, setDarkMode] = useState(false)
 
   async function handleSearch(query) {
     setSearchLoading(true)
@@ -73,10 +74,19 @@ export default function App() {
   const nothingYet = books.length === 0 && !searchLoading && !searchError
 
   return (
-    <div className="app">
+    <div className={`app${darkMode ? ' dark' : ''}`}>
       <header className="app-header">
-        <h1>Livros &amp; Países</h1>
-        <p>Pesquise um livro e veja no mapa os países que falam o idioma da obra</p>
+        <div className="app-header-left">
+          <h1>🌍 GlobeBook</h1>
+          <p>Pesquise um livro e veja no mapa os países que falam o idioma da obra</p>
+        </div>
+        <button
+          className="dark-toggle"
+          onClick={() => setDarkMode(d => !d)}
+          title={darkMode ? 'Modo claro' : 'Modo noturno'}
+        >
+          {darkMode ? '☀️ Modo claro' : '🌙 Modo noturno'}
+        </button>
       </header>
 
       <SearchBar onSearch={handleSearch} loading={searchLoading} />
@@ -101,7 +111,7 @@ export default function App() {
         </aside>
 
         <main className="app-map">
-          <WorldMap countries={countries} loading={countriesLoading} />
+          <WorldMap countries={countries} loading={countriesLoading} darkMode={darkMode} />
         </main>
       </div>
     </div>

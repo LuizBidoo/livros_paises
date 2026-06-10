@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
-import { MapContainer, TileLayer, CircleMarker, Popup, useMap } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
+import L from 'leaflet'
 
 function MapController({ countries }) {
   const map = useMap()
@@ -27,7 +28,26 @@ function MapController({ countries }) {
   return null
 }
 
-export default function WorldMap({ countries, loading }) {
+function flagIcon(country) {
+  const src = country.flags?.svg || country.flags?.png || ''
+  return L.divIcon({
+    className: '',
+    html: `<div class="flag-sphere"><img src="${src}" alt="${country.name.common}" /></div>`,
+    iconSize: [40, 40],
+    iconAnchor: [20, 20],
+    popupAnchor: [0, -22],
+  })
+}
+
+export default function WorldMap({ countries, loading, darkMode }) {
+  const tileUrl = darkMode
+    ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+    : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+
+  const tileAttribution = darkMode
+    ? '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>'
+    : '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+
   return (
     <div className="world-map">
       {loading && (
@@ -44,23 +64,14 @@ export default function WorldMap({ countries, loading }) {
         style={{ height: '100%', width: '100%' }}
         minZoom={1}
       >
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        />
+        <TileLayer key={tileUrl} url={tileUrl} attribution={tileAttribution} />
         <MapController countries={countries} />
         {countries.map(country =>
           country.latlng?.length === 2 ? (
-            <CircleMarker
+            <Marker
               key={country.cca3}
-              center={country.latlng}
-              radius={12}
-              pathOptions={{
-                color: '#c0392b',
-                fillColor: '#e74c3c',
-                fillOpacity: 0.7,
-                weight: 2,
-              }}
+              position={country.latlng}
+              icon={flagIcon(country)}
             >
               <Popup>
                 <strong>{country.flag} {country.name.common}</strong>
@@ -68,7 +79,7 @@ export default function WorldMap({ countries, loading }) {
                   <><br />Capital: {country.capital[0]}</>
                 )}
               </Popup>
-            </CircleMarker>
+            </Marker>
           ) : null
         )}
       </MapContainer>

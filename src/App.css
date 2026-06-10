@@ -1,31 +1,56 @@
+/* ===== Base ===== */
 .app {
   display: flex;
   flex-direction: column;
   height: 100vh;
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
   background: #f8f9fa;
+  color: #212529;
+  transition: background 0.2s, color 0.2s;
 }
 
-/* Header */
+/* ===== Header ===== */
 .app-header {
   background: linear-gradient(135deg, #1a252f 0%, #2980b9 100%);
   color: white;
   padding: 0.875rem 1.5rem;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
-.app-header h1 {
+.app-header-left h1 {
   font-size: 1.4rem;
   font-weight: 700;
 }
 
-.app-header p {
+.app-header-left p {
   font-size: 0.8rem;
   opacity: 0.75;
   margin-top: 3px;
 }
 
-/* Search bar */
+.dark-toggle {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  border-radius: 20px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.dark-toggle:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* ===== Search bar ===== */
 .search-bar {
   display: flex;
   gap: 0.5rem;
@@ -33,6 +58,7 @@
   background: white;
   border-bottom: 1px solid #e9ecef;
   flex-shrink: 0;
+  transition: background 0.2s, border-color 0.2s;
 }
 
 .search-bar input {
@@ -42,7 +68,9 @@
   border-radius: 6px;
   font-size: 0.925rem;
   outline: none;
-  transition: border-color 0.15s;
+  background: white;
+  color: #212529;
+  transition: border-color 0.15s, background 0.2s, color 0.2s;
 }
 
 .search-bar input:focus {
@@ -71,7 +99,7 @@
   cursor: not-allowed;
 }
 
-/* Main layout */
+/* ===== Main layout ===== */
 .app-content {
   display: flex;
   flex: 1;
@@ -84,6 +112,7 @@
   overflow-y: auto;
   background: white;
   border-right: 1px solid #e9ecef;
+  transition: background 0.2s, border-color 0.2s;
 }
 
 .app-map {
@@ -92,7 +121,7 @@
   position: relative;
 }
 
-/* States */
+/* ===== States ===== */
 .empty-state {
   padding: 2rem 1rem;
   text-align: center;
@@ -114,7 +143,7 @@
   border-left: 3px solid #e74c3c;
 }
 
-/* Book list */
+/* ===== Book list ===== */
 .book-list {
   padding: 0.875rem;
   border-bottom: 1px solid #e9ecef;
@@ -136,7 +165,7 @@
   gap: 0.3rem;
 }
 
-/* Book card */
+/* ===== Book card ===== */
 .book-card {
   display: flex;
   align-items: center;
@@ -219,7 +248,7 @@
   color: #adb5bd !important;
 }
 
-/* Book detail */
+/* ===== Book detail ===== */
 .book-detail {
   padding: 0.875rem;
 }
@@ -262,7 +291,7 @@
   line-height: 1.4;
 }
 
-/* Countries */
+/* ===== Countries ===== */
 .countries-section h4 {
   font-size: 0.8rem;
   font-weight: 600;
@@ -305,7 +334,7 @@
   padding: 0.5rem 0;
 }
 
-/* Map */
+/* ===== Map ===== */
 .world-map {
   height: 100%;
   width: 100%;
@@ -345,4 +374,142 @@
 .map-empty p {
   font-size: 0.875rem;
   color: #6c757d;
+}
+
+/* ===== Flag sphere marker ===== */
+.flag-sphere {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2.5px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+.flag-sphere img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ===== Dark mode ===== */
+.app.dark {
+  background: #0f1923;
+  color: #e0e6ed;
+}
+
+.app.dark .search-bar {
+  background: #1a2635;
+  border-bottom-color: #2c3e50;
+}
+
+.app.dark .search-bar input {
+  background: #0f1923;
+  color: #e0e6ed;
+  border-color: #2c3e50;
+}
+
+.app.dark .search-bar input:focus {
+  border-color: #3498db;
+}
+
+.app.dark .app-sidebar {
+  background: #1a2635;
+  border-right-color: #2c3e50;
+}
+
+.app.dark .book-list {
+  border-bottom-color: #2c3e50;
+}
+
+.app.dark .book-list h2 {
+  color: #6b8096;
+}
+
+.app.dark .book-card:hover {
+  background: #1e3448;
+  border-color: #2e5d8a;
+}
+
+.app.dark .book-card.selected {
+  background: #1a3a56;
+  border-color: #3498db;
+}
+
+.app.dark .book-card-cover {
+  background: #2c3e50;
+}
+
+.app.dark .book-card-info strong {
+  color: #dce8f0;
+}
+
+.app.dark .book-card-info span {
+  color: #7f96aa;
+}
+
+.app.dark .book-meta {
+  color: #5a7286 !important;
+}
+
+.app.dark .no-cover {
+  color: #5a7286;
+}
+
+.app.dark .empty-state {
+  color: #5a7286;
+}
+
+.app.dark .alert-error {
+  background: #2c1a1a;
+  color: #e57373;
+  border-left-color: #c0392b;
+}
+
+.app.dark .book-detail h2 {
+  color: #6b8096;
+}
+
+.app.dark .book-detail-info h3 {
+  color: #dce8f0;
+}
+
+.app.dark .book-detail-info p {
+  color: #9db3c5;
+}
+
+.app.dark .countries-section h4 {
+  color: #9db3c5;
+}
+
+.app.dark .countries-list {
+  border-color: #2c3e50;
+}
+
+.app.dark .countries-list li {
+  color: #9db3c5;
+  border-bottom-color: #1e2f3e;
+}
+
+.app.dark .loading {
+  color: #6b8096;
+}
+
+.app.dark .error {
+  color: #e57373;
+}
+
+.app.dark .map-loading {
+  background: rgba(15, 25, 35, 0.9);
+  color: #9db3c5;
+}
+
+.app.dark .map-empty {
+  background: rgba(15, 25, 35, 0.85);
+}
+
+.app.dark .map-empty p {
+  color: #9db3c5;
 }
